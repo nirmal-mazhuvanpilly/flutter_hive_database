@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hive_database/add_contact.dart';
+import 'package:flutter_hive_database/contact_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(),
+      body: Column(
+        children: const [
+          ContactList(),
+          AddContact(),
+        ],
+      ),
     );
   }
 }
