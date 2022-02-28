@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hive_database/models/contacts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class AddContact extends StatefulWidget {
   const AddContact({
@@ -13,14 +15,10 @@ class _AddContactState extends State<AddContact> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _numberController.dispose();
-    super.dispose();
+  Future<void> _addContact(Contacts contact) async {
+    final contactsBox = Hive.box("contacts");
+    contactsBox.add(contact);
   }
-
-  Future<void> _addContact() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +71,10 @@ class _AddContactState extends State<AddContact> {
               onPressed: () {
                 if (_nameController.text.isNotEmpty ||
                     _numberController.text.isNotEmpty) {
-                  _addContact().then((value) {
+                  final contact = Contacts(
+                      name: _nameController.text,
+                      number: _numberController.text);
+                  _addContact(contact).then((value) {
                     _nameController.clear();
                     _numberController.clear();
                   });
@@ -88,5 +89,12 @@ class _AddContactState extends State<AddContact> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _numberController.dispose();
+    super.dispose();
   }
 }
