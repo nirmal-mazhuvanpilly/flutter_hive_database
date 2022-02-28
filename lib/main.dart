@@ -64,6 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
+    // Box Compaction
+    // According to the official documentation:
+    // Hive is an append-only data store. When you change or delete a value, the change is written to the end of the box file. This leads sooner or later to a growing box file. Hive may automatically “compact” your box at any time. 
+    // Since we are both updating and deleting values, sooner or later, the compaction will kick in. While you can leave the decision of when to compact completely up to Hive, invoking compaction manually is also possible, although rarely needed. We could, however, call compact() right before closing all the Boxes
+    Hive.box('contacts').compact();
     Hive.close();
     super.dispose();
   }
